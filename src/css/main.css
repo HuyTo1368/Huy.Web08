@@ -1,0 +1,40 @@
+@import url(../css/base/button.css);
+@import url(../css/base/input.css);
+@import url(../css/base/scollbar.css);
+@import url(../css/base/table.css);
+@import url(../css/base/paging.css);
+@import url(../css/base/pageSize.css);
+@import url(../css/base/form.css);
+@import url(../css/base/radio_button.css);
+@import url(../css/base/checkbox.css);
+@import url(../css/base/combobox.css);
+
+@import url(../css/common/common.css);
+@import url(../css/common/showhide.css);
+
+body {
+    margin: 0;
+    font-family: MISA GoogleSans;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: MISA GoogleSans;
+    src: url(../assets/fonts/notosans-regular.2cb88a13.woff2);
+}
+
+@font-face {
+    font-family: MISA GoogleSans Blod;
+    src: url(../assets/fonts/notosans-bold.3ede5aff.woff2);
+}
+
+@font-face {
+    font-family: MISA GoogleSans Italic;
+    src: url(../assets/fonts/notosans-italic.1c1aaac9.woff2);
+}
+
+@font-face {
+    font-family: MISA GoogleSans Semibold;
+    src: url(../assets/fonts/notosans-semibold.df3e6dc4.woff2);
+}

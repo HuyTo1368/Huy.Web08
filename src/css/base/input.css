@@ -1,0 +1,62 @@
+/*Input tìm kiếm*/
+.m-search-infor .m-input-infor {
+    height: 32px;
+    font-size: 13px;
+    border: 1px solid #babec5;
+    box-sizing: border-box;
+    width: 260px;
+    padding-left: 8px;
+    padding-right: 24px;
+    border-radius: 2px;
+}
+
+.m-search-infor {
+    display: flex;
+    align-items: center;
+    padding-right: 8px;
+    height: 32px;
+    width: 260px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.m-search-infor .m-icon-search {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -992px -360px;
+    height: 16px;
+    width: 16px;
+    min-height: 16px;
+    min-width: 16px;
+    position: absolute;
+    left: 230px;
+}
+
+.m-search-infor input:focus {
+    outline: none;
+    border: 1px solid #019160;
+}
+
+
+/*Input form đăng nhập*/
+.m-row-field input {
+    height: 32px;
+    background-color:#ffffff;
+    border-color: #babec5;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    color: #111111;
+    font-size: 13px;
+    padding: 0px 12px 0px 10px;
+    margin-top: 4px;
+    box-sizing: border-box;
+}
+
+.m-search-infor input:focus {
+    outline: none;
+    border-color: #019160;
+}
+
+.m-row-field input:focus {
+    outline: none;
+    border-color: #019160;
+}

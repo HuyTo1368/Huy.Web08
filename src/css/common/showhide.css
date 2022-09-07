@@ -1,0 +1,8 @@
+.showDialog {
+    display: block;
+}
+
+.none-event {
+    pointer-events: none;
+    opacity: 0.5 !important;
+}

@@ -1,0 +1,37 @@
+.m-content {
+    position: absolute;
+    top: 48px;
+    left: 180px;
+    bottom: 0;
+    right: 0;
+    background-color: #F4F5F7;
+    box-sizing: border-box;
+    padding: 12px 12px 12px 12px;
+}
+
+.m-content .m-header-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.m-content .m-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111;
+    align-items: center;
+}
+
+.m-content .m-center-content {
+    background-color: #fff;
+    margin-top: 12px;
+    height: calc(100vh - 117px);
+    box-sizing: border-box;
+    padding: 8px 0 0 8px;
+}
+
+.m-content .m-grid-header {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 16px;
+}

@@ -1,0 +1,66 @@
+.m-grid-table {
+    margin-top: 16px;
+    height: calc(100vh - 233px);
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.m-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.m-table thead tr {
+    background-color: #E5E8EC;
+    border-bottom: 1px solid #c7c7c7;
+    height: 34px;
+    border-collapse: collapse separate;
+}
+
+.m-table tbody tr:hover {
+    background-color: #F2F9FF;
+}
+
+.m-table thead th {
+    background-color: #E5E8EC;
+    border-bottom: 1px solid #c7c7c7;
+    border-right: 1px solid #c7c7c7;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    padding: 0 10px;
+    position: sticky;
+    top: 0px;
+    
+}
+
+.m-table tbody td {
+    height: 44px;
+    border-right: 1px dotted #c7c7c7;
+    border-bottom: 1px solid #c7c7c7;
+    box-sizing: border-box;
+    padding: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.m-table-func {
+    display: flex;
+    justify-items: center;
+    margin: auto;
+}
+
+.m-func-name {
+    font-weight: 600;
+    color: #0075c0;
+    padding-left: 28px;
+    cursor: pointer;
+}
+
+.m-table-func .btn-dropdown {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -896px -359px;
+    margin-left: 10px;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+    padding-right: 5px;
+}

@@ -1,0 +1,131 @@
+.m-navbar {
+    width: 180px;
+    height: 100vh;
+    background-color: #393A3D;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.m-logo-container {
+    height: 48px;
+    padding-left: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.m-logo-option {
+    height: 24px;
+    width: 24px;
+    margin-right: 10px;
+    background-color: blueviolet;
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -424px -86px;
+    cursor: pointer;
+}
+
+.m-logo-amis {
+    height: 32px;
+}
+
+.m-logo-amis {
+    height: 32px;
+}
+
+.m-logo-amis .m-img-icon {
+    height: 32px;
+    display: block;
+}
+
+.m-menu-tooltip {
+    height: calc(100vh - 48px);
+    padding-top: 10px;
+    box-sizing: border-box;
+}
+
+.m-con-tooltip {
+    padding-left: 8px;
+    height: 42px;
+}
+
+.m-tooltip-content {
+    display: flex;
+    margin-left: 8px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.m-tooltip-content .item-icon {
+    margin-right: 8px;
+}
+
+.ms-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    align-items: center;
+}
+
+.item-icon .m-icon_toggle {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -30px -1628px;
+}
+
+.m-tooltip-content .item-title {
+    color: #fff;
+    line-height: 42px;
+}
+
+.item-icon .m-icon_dashboard {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -73px -1628px;
+}
+
+.item-icon .m-icon_bank {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -117px -1628px;
+}
+
+.item-icon .m-icon_cash {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -161px -1628px;
+}
+
+.item-icon .m-icon_sale {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -204px -1628px;
+}
+
+.item-icon .m-icon_invoice {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -249px -1628px;
+}
+
+.item-icon .m-icon_stock {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -291px -1628px;
+}
+
+.item-icon .m-icon_tools {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -336px -1628px;
+}
+
+.item-icon .m-icon_fixed-assets {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -378px -1630px;
+}
+
+.item-icon .m-icon_tax {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -423px -1630px;
+}
+
+.item-icon .m-icon_price {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -467px -1628px;
+}
+
+.item-icon .m-icon_general {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -510px -1628px;
+}
+
+.item-icon .m-icon_budget {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -378px -1659px;
+}
+
+.item-icon .m-icon_report {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -547px -1628px;
+}
+
+.item-icon .m-icon_finance {
+    background: url(../../assets/img/Sprites.64af8f61.svg) -204px -1664px;
+}

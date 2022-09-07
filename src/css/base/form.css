@@ -1,0 +1,94 @@
+.m-form-employee {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    display: none;
+}
+
+.m-detail-employee {
+    width: 900px;
+    height: 540px;
+    background-color: #fff;
+    z-index: 2;
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.m-detail-employee .m-dialog-header {
+    display: flex;
+    height: 75px;
+    padding: 20px 0px 20px 32px;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.m-dialog-header .m-dialog-close {
+    height: 24px;
+    width: 24px;
+    font-size: 24px;
+    display: flex;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.m-detail-employee .m-dialog-content {
+    box-sizing: border-box;
+    padding-left: 32px;
+}
+
+.m-detail-employee .m-header-right {
+    display: flex;
+    align-items: center;
+}
+
+.m-header-right .m-checkbox {
+    margin-top: 6px;
+    margin-right: 14px;
+}
+
+.m-detail-employee .m-dialog-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-right: 16px
+}
+
+.m-detail-employee .m-infor-employee {
+    display: flex;
+}
+
+.m-detail-employee .m-infor-row {
+    display: flex;
+}
+
+.m-detail-employee .m-row-field {
+    margin-right: 6px;
+    margin-bottom: 12px;
+}
+
+.m-infor-right {
+    margin-right: 26px;
+}
+
+.m-row-field>label {
+    font-weight: 600;
+}
+
+.m-gender {
+    display: flex;
+    box-sizing: border-box;
+    padding-top: 10px;
+    height: 32px !important;
+}
+
+.m-detail-employee .m-dialog-button {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 32px 0 32px;
+}

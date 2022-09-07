@@ -1,0 +1,55 @@
+.m-btn-add {
+    background-color: #2ca01c;
+    color: #fff;
+    border-radius: 5px;
+    border: 0;
+    padding: 0 12px 0 12px;
+    cursor: pointer;
+}
+
+/*Refesh lại bảng*/
+.m-btn {
+    border: 2px solid #3b3c3f;
+    height: 36px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.m-icon-refresh {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -423px -201px;
+    height: 24px !important;
+    width: 24px;
+    min-height: 24px;
+    min-width: 24px;
+    border: 0 !important;
+    margin-left: 16px;
+    align-items: center;
+}
+
+.m-btn-form {
+    height: 34px;
+    padding-left: 20px;
+    padding-right: 20px;
+    align-items: center;
+    border-radius: 4px;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 1px solid #babec5;
+}
+
+.m-btn-form:hover {
+    background-color: #d2d4d6;
+}
+
+.m-btn-form-add {
+    background-color: #019160;
+    color: #fff;
+    margin-left: 10px;
+    border: 1px solid #019160;
+}
+
+.m-btn-form-add:hover {
+    background-color: #08b87d;
+}

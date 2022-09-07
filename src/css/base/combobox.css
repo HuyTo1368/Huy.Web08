@@ -1,0 +1,86 @@
+.m-combobox {
+    position: relative;
+    height: 32px;
+    width: 391px;
+    display: flex;
+    margin-bottom: 4px;
+}
+
+input.m-combobox-input {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-color: #bbb;
+    border-radius: 4px;
+    border-style: solid;
+    padding: 0 13px;
+    outline: unset;
+    text-overflow: ellipsis;
+}
+
+input.m-combobox-input:hover {
+    border-color: #019160;
+}
+
+.m-combobox .m-button-data {
+    position: absolute;
+    height: 100%;
+    width: 28px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    padding-top: 3px;
+    padding-left: 3px;
+    margin-top: 4px;
+}
+
+button.m-combobox-button{
+    width: 8px;
+	height: 5px;
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -564px -365px;
+    cursor: pointer;
+    border: unset;
+    flex-shrink: 0;
+    border-bottom: 0;
+}
+
+.m-combobox input:focus~button {
+    border: 1px solid transparent !important;
+    background-color: #bebebe;
+}
+
+.m-combobox .m-combobox-data {
+    position: absolute;
+    background-color: #fff;
+    top: 36px;
+    width: 100%;
+    padding: 4px 0;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.356);
+    z-index: 9;
+}
+
+.m-combobox .m-combobox-data .m-combobox-item {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding-left: 44px
+}
+
+.m-combobox .m-combobox-data .m-combobox-item:hover {
+    background-color: #bebebe;
+}
+
+.m-combobox .m-combobox-item.m-combobox-selected{
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-color: #2CA01C;
+    background-size: 24px 24px;
+    color: #fff;
+}
+
