@@ -46,7 +46,7 @@
                   type="text"
                   style="width: 235px"
                   placeholder="Nhập họ tên"
-                  v-model="employee.EmployeeName"
+                  v-model="employee.FullName"
                   ref="employeeNameInput"
                 />
               </div>

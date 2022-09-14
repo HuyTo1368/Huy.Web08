@@ -24,26 +24,6 @@ Combobox.getDepartment = function (Parent) {
     }
 }
 
-Combobox.getPosition = function (Parent) {
-
-    let data = [
-        { id: "0", name: "Nhân viên" },
-        { id: "1", name: "Giám đốc" },
-        { id: "2", name: "Khác" },
-    ],
-        placeholder = "Tất cả vị trí",
-        FieldName = "Position",
-        NameId = "PositionId";
-
-    return {
-        data,
-        placeholder,
-        FieldName,
-        NameId,
-        Parent,
-    }
-}
-
 Combobox.getPageSize = function (Parent) {
     let data = [
         { id: "10", name: "10 bản ghi trên một trang"},

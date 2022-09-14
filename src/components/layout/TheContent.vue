@@ -104,7 +104,7 @@
               <td style="min-width: 100px; width: 100px">
                 {{ this.formatDate(emp.DateOfBirth) }}
               </td>
-              <td style="min-width: 138px; width: 138px">Nhân viên</td>
+              <td style="min-width: 138px; width: 138px">{{ emp.PositionName }}</td>
               <td style="min-width: 221px; width: 221px">
                 {{ emp.DepartmentName }}
               </td>
@@ -154,6 +154,7 @@
       :isShow="isShowDialog"
       @closeOnClick="showHideDialog"
       :employeeSelectedInChild="employeeSelected"
+      :formMode="formMode"
     />
   </div>
 </template>
@@ -183,6 +184,8 @@ export default {
       employeeSelected: {},
 
       isShowDialog: false, // form thông tin nhân viên
+
+      formMode: this.MISAenum.FormMode.Add, // Chọn thêm sửa xóa
 
       comboboxPageSize: Combobox.getPageSize("1"),
 
@@ -230,6 +233,7 @@ export default {
      */
     onClickAdd() {
       let me = this;
+      me.formMode = me.MISAenum.FormMode.Add;
       try {
         me.employeeSelected = {};
         me.showHideDialog(true);
@@ -244,6 +248,17 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    /**
+    * Mô tả : Chỉnh sửa thông tin nhân viên
+    * Created by: Hà Văn Huy
+    * Created date: 14:30 13/09/2022
+    */
+    onClickFix(emp) {
+      this.showHideDialog(true);
+      this.formMode = this.MISAenum.FormMode.Update;
+      this.employeeSelected = emp;
     },
 
     /**
