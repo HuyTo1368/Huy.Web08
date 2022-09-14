@@ -167,7 +167,6 @@
 import axios from "axios";
 import PageSizeComponent from "../base/PageSize.vue";
 import EmployeeDetail from "../view/EmployeeDetail.vue";
-
 import Combobox from "../../js/combobox";
 
 export default {
@@ -187,7 +186,7 @@ export default {
 
       formMode: this.MISAenum.FormMode.Add, // Chọn thêm sửa xóa
 
-      comboboxPageSize: Combobox.getPageSize("1"),
+      comboboxPageSize: Combobox.getPageSize("1"), //Số lượng bản ghi
 
       pageNumberCurrent: 1,
       pageNumberMin: 1,
@@ -264,7 +263,7 @@ export default {
     /**
      * Mô tả : Ẩn hiện form thông tin nhân viên
      * Created by: Hà Văn Huy
-     * Created date: 11:25 13/09/2022
+     * Created date: 11:25 12x/09/2022
      */
     showHideDialog(isShow) {
       this.isShowDialog = isShow;
