@@ -20,7 +20,8 @@
           <div class="item-title">Tổng quan</div>
         </div>
       </div>
-      <div class="m-con-tooltip">
+      <div class="m-con-tooltip m-tooltip-select">
+        <div class="item-select"></div>
         <div class="m-tooltip-content">
           <div class="item-icon">
             <div class="ms-icon m-icon_dashboard"></div>

@@ -44,6 +44,18 @@
 .m-con-tooltip {
     padding-left: 8px;
     height: 42px;
+    display: flex;
+}
+
+.m-tooltip-select {
+    background-color: #58595D;
+    padding-left: 0;
+}
+
+.item-select {
+    background-color: #299F31;
+    width: 8px;
+    height: 42px;
 }
 
 .m-tooltip-content {
