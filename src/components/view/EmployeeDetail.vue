@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="['m-form-employee', isShow == true ? 'showDialog' : '']">
+  <div v-if="isShow == true" class="m-form-employee">
     <div class="m-detail-employee">
       <div class="m-dialog-header">
         <div class="m-header-right">
@@ -223,9 +223,34 @@ export default {
       employee: {},
 
       departments: Combobox.getDepartment("EmployeeList"),
-
     };
   },
 
+  watch: {
+    /**
+    * Mô tả : Tự động thêm mã nhân viên và focus 
+    * Created by: Hà Văn Huy
+    * Created date: 11:27 13/09/2022
+    */
+    employeeSelectedInChild: function (newEmp) {
+      this.employee = newEmp;
+      setTimeout(() => {
+        this.$refs.employeeCodeInput.focus();
+      }, 100);
+    },
+  },
+
+  methods: {
+    /**
+    * Mô tả : Tắt form thông tin nhân viên
+    * Created by: Hà Văn Huy
+    * Created date: 11:15 13/09/2022
+    */
+    onClickClose() {
+      this.$emit("closeOnClick", false);
+    }
+
+
+  }
 };
 </script>

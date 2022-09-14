@@ -12,6 +12,8 @@
             type="text"
             placeholder="Tìm kiếm theo mã, tên nhân viên"
             class="m-input-infor"
+            v-on:keyup.enter="onQuickSearch"
+            v-model="quickSearch"
           />
           <div class="m-icon-search"></div>
         </div>
@@ -94,12 +96,14 @@
                 {{ emp.EmployeeCode }}
               </td>
               <td style="min-width: 140px; max-width: 190px">
-                {{ emp.EmployeeName }}
+                {{ emp.FullName }}
               </td>
               <td style="min-width: 64px; width: 64px">
                 {{ emp.GenderName }}
               </td>
-              <td style="min-width: 100px; width: 100px">huy</td>
+              <td style="min-width: 100px; width: 100px">
+                {{ this.formatDate(emp.DateOfBirth) }}
+              </td>
               <td style="min-width: 138px; width: 138px">Nhân viên</td>
               <td style="min-width: 221px; width: 221px">
                 {{ emp.DepartmentName }}
@@ -123,7 +127,10 @@
       </div>
       <div class="m-grid-paging">
         <div class="m-paging-left">
-          <div>Tổng số : <span style="font-weight: 600">88</span> bản ghi</div>
+          <div>
+            Tổng số :
+            <span style="font-weight: 600">{{ totalRecord }}</span> bản ghi
+          </div>
         </div>
         <div class="m-paging-right">
           <div class="m-page-size">
@@ -146,6 +153,7 @@
     <EmployeeDetail
       :isShow="isShowDialog"
       @closeOnClick="showHideDialog"
+      :employeeSelectedInChild="employeeSelected"
     />
   </div>
 </template>
@@ -176,7 +184,18 @@ export default {
 
       isShowDialog: false, // form thông tin nhân viên
 
-       comboboxPageSize: Combobox.getPageSize("1")
+      comboboxPageSize: Combobox.getPageSize("1"),
+
+      pageNumberCurrent: 1,
+      pageNumberMin: 1,
+      pageNumberLessMiddle: 2,
+      pageNumberThanMiddle: 3,
+      PageNumberMax: 4,
+      jobpositionID: "",
+      departmentID: "",
+      pageSize: 10, // Số bản ghi trên trang
+      totalRecord: 0, // Tổng số bản ghi
+      quickSearch: "", // Tìm kiếm nhanh theo tên, mã nv
     };
   },
 
@@ -186,25 +205,42 @@ export default {
   },
 
   methods: {
+    /**
+     * Mô tả : Lấy danh sách thông tin nhân viên
+     * Created by: Hà Văn Huy
+     * Created date: 11:53 13/09/2022
+     */
     async getEmployeePaging() {
       try {
         let me = this;
-        let res = await axios.get(`https://amis.manhnv.net/api/v1/Employees`);
-        me.employees = res.data;
+        let res = await axios.get(
+          `https://cukcuk.manhnv.net/api/v1/Employees/filter?pageSize=${me.pageSize}&pageNumber=${me.pageNumberCurrent}&employeeFilter=${me.quickSearch}&departmentId=${me.departmentID}&positionId=${me.jobpositionID}`
+        );
+        me.employees = res.data.Data;
+        me.totalRecord = res.data.TotalRecord;
       } catch (error) {
         console.log(error);
       }
     },
 
     /**
-     * Mô tả : Thưc hiệm thêm nhân viên
+     * Mô tả : Mở form thông tin nhân viên
      * Created by: Hà Văn Huy
+     * Created date: 11:23 13/09/2022
      */
     onClickAdd() {
       let me = this;
       try {
         me.employeeSelected = {};
         me.showHideDialog(true);
+        axios
+          .get(`https://cukcuk.manhnv.net/api/v1/Employees/NewEmployeeCode`)
+          .then(function (res) {
+            me.employeeSelected.EmployeeCode = res.data;
+          })
+          .catch(function (res) {
+            console.log(res.data);
+          });
       } catch (error) {
         console.log(error);
       }
@@ -213,9 +249,55 @@ export default {
     /**
      * Mô tả : Ẩn hiện form thông tin nhân viên
      * Created by: Hà Văn Huy
+     * Created date: 11:25 13/09/2022
      */
     showHideDialog(isShow) {
       this.isShowDialog = isShow;
+    },
+
+    /**
+     * Mô tả : Enter tìm kiếm theo tên, mã nhân viên
+     * Created by: Hà Văn Huy
+     * Created date: 13:00 13/09/2022
+     */
+    onQuickSearch() {
+      this.getEmployeePaging();
+    },
+
+    /**
+     * Mô tả : Chọn số lượng bản ghi
+     * Created by: Hà Văn Huy
+     * Created date: 13:07 13/09/2022
+     */
+    bindDataForm(data) {
+      let me = this;
+      me.pageSize = data.item.id;
+      me.getEmployeePaging();
+    },
+
+    /**
+     * Mô tả : Fomat định dạng ngày tháng năm
+     * Created by: Hà Văn Huy
+     * Created date: 12:23 12/09/2022
+     */
+    formatDate(value) {
+      try {
+        if (value) {
+          value = new Date(value);
+          let date = value.getDate();
+          let month = value.getMonth() + 1;
+          let year = value.getFullYear();
+          date = date < 10 ? `0${date}` : date;
+          month = month < 10 ? `0${month}` : month;
+          value = `${date}/${month}/${year}`;
+        } else {
+          value = "Chưa có";
+        }
+        return value;
+      } catch (error) {
+        console.log(error);
+        return "";
+      }
     },
   },
 };
