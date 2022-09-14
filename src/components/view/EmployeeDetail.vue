@@ -78,12 +78,7 @@
               <div class="m-row-field">
                 <label>Ngày sinh</label>
                 <br />
-                <input
-                  type="date"
-                  style="width: 161px"
-                  placeholder="Nhập mã nhân viên"
-                  v-model="dobformat"
-                />
+                <input type="date" style="width: 161px" v-model="dobformat" />
               </div>
               <div class="m-row-field" style="padding-left: 20px">
                 <label>Giới tính</label>
@@ -91,17 +86,32 @@
                 <div class="m-gender">
                   <label class="m-radio_button"
                     >Nam
-                    <input type="radio" name="radio" />
+                    <input
+                      type="radio"
+                      name="radio"
+                      value="0"
+                      v-model="employee.Gender"
+                    />
                     <span class="checkmark"></span>
                   </label>
                   <label class="m-radio_button"
                     >Nữ
-                    <input type="radio" name="radio" />
+                    <input
+                      type="radio"
+                      name="radio"
+                      value="1"
+                      v-model="employee.Gender"
+                    />
                     <span class="checkmark"></span>
                   </label>
                   <label class="m-radio_button"
                     >Khác
-                    <input type="radio" name="radio" />
+                    <input
+                      type="radio"
+                      name="radio"
+                      value="2"
+                      v-model="employee.Gender"
+                    />
                     <span class="checkmark"></span>
                   </label>
                 </div>
@@ -201,19 +211,22 @@
         </div>
       </div>
     </div>
+    <MessageBox
+    />
   </div>
 </template>
 
 <script>
 import Combobox from "../../js/combobox";
-
 import ComboboxComponent from "../base/Combobox.vue";
+import MessageBox from "../base/MessageBox.vue";
 
 export default {
   name: "EmployeeDetail",
 
   components: {
     ComboboxComponent,
+    MessageBox,
   },
 
   props: ["isShow", "employeeSelectedInChild", "formMode"],
@@ -222,18 +235,22 @@ export default {
     return {
       employee: {},
 
+      //date of birth sau khi dinh dang
+      dobformat: "",
+
       departments: Combobox.getDepartment("EmployeeList"),
     };
   },
 
   watch: {
     /**
-    * Mô tả : Tự động thêm mã nhân viên và focus 
-    * Created by: Hà Văn Huy
-    * Created date: 11:27 13/09/2022
-    */
+     * Mô tả : Tự động thêm mã nhân viên và focus
+     * Created by: Hà Văn Huy
+     * Created date: 11:27 13/09/2022
+     */
     employeeSelectedInChild: function (newEmp) {
       this.employee = newEmp;
+      this.dobformat = this.formatDate(this.employee.DateOfBirth);
       setTimeout(() => {
         this.$refs.employeeCodeInput.focus();
       }, 100);
@@ -242,15 +259,37 @@ export default {
 
   methods: {
     /**
-    * Mô tả : Tắt form thông tin nhân viên
-    * Created by: Hà Văn Huy
-    * Created date: 11:15 13/09/2022
-    */
+     * Mô tả : Tắt form thông tin nhân viên
+     * Created by: Hà Văn Huy
+     * Created date: 11:15 13/09/2022
+     */
     onClickClose() {
       this.$emit("closeOnClick", false);
-    }
+    },
 
-
-  }
+    /**
+     * Mô tả : Fomat ngày tháng năm
+     * Created by: Hà Văn Huy
+     * Created date: 20:43 13/09/2022
+     */
+    formatDate(value) {
+      if (value) {
+        value = new Date(value);
+        let day = value.getDate();
+        if (day < 10) {
+          day = "0" + day;
+        }
+        let month = value.getMonth() + 1;
+        if (month < 10) {
+          month = "0" + month;
+        }
+        let year = value.getFullYear();
+        value = `${year}-${month}-${day}`;
+        return value;
+      } else {
+        return "";
+      }
+    },
+  },
 };
 </script>
