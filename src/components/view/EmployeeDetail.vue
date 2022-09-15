@@ -29,18 +29,19 @@
           <div class="m-infor-right">
             <div class="m-infor-row">
               <div class="m-row-field">
-                <label>Mã (<font color="red">*</font>)</label>
+                <label>Mã <span style="color: red">*</span></label>
                 <br />
                 <input
                   type="text"
                   style="width: 151px"
                   placeholder="Nhập mã nhân viên"
                   v-model="employee.EmployeeCode"
+                  id="txtEmployeeCode"
                   ref="employeeCodeInput"
                 />
               </div>
               <div class="m-row-field">
-                <label>Tên (<font color="red">*</font>)</label>
+                <label>Tên <span style="color: red">*</span></label>
                 <br />
                 <input
                   type="text"
@@ -48,12 +49,13 @@
                   placeholder="Nhập họ tên"
                   v-model="employee.FullName"
                   ref="employeeNameInput"
+                  id="txtEmployeeName"
                 />
               </div>
             </div>
             <div class="m-infor-row">
               <div class="m-row-field">
-                <label>Đơn vị (<font color="red">*</font>)</label>
+                <label>Đơn vị <span style="color: red">*</span></label>
                 <br />
                 <combobox-component
                   :items="this.departments"
@@ -212,14 +214,22 @@
       </div>
     </div>
     <MessageBox
+      :showMsg="isShowMsgBox"
+      :message="message"
+      :messageBoxMode="messageBoxMode"
+      @cancelMsgBox="isShowMsgBox = !$event"
     />
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 import Combobox from "../../js/combobox";
 import ComboboxComponent from "../base/Combobox.vue";
 import MessageBox from "../base/MessageBox.vue";
+
+import MISAenum from "../../js/enum";
 
 export default {
   name: "EmployeeDetail",
@@ -238,7 +248,11 @@ export default {
       //date of birth sau khi dinh dang
       dobformat: "",
 
+      isShowMsgBox: false, // Hiển thị messageBox
+
       departments: Combobox.getDepartment("EmployeeList"),
+
+      check: true,
     };
   },
 
@@ -265,6 +279,111 @@ export default {
      */
     onClickClose() {
       this.$emit("closeOnClick", false);
+    },
+
+    /**
+     * Mô tả : Hiển thị cảnh báo
+     * Created by: Hà Văn Huy
+     * Created date: 08:46 15/09/2022
+     */
+    showWarningMsgBox(msg) {
+      this.message = msg;
+      this.messageBoxMode = MISAenum.Msg.Warning;
+      this.isShowMsgBox = true;
+    },
+
+    /**
+     * Mô tả : Kiểm tra các trường dữ liệu bắt buộc nhập
+     * Created by: Hà Văn Huy
+     * Created date: 13:38 15/09/2022
+     */
+    validateEmployee() {
+      this.check = true;
+      if (!this.employee.EmployeeCode) {
+        this.showWarningMsgBox(MISAenum.MsgBox.InvalidEmployeeCode);
+        this.check = false;
+      } else if (!this.employee.FullName) {
+        this.showWarningMsgBox(MISAenum.MsgBox.InvalidEmployeeName);
+        this.check = false;
+      } else if (!this.employee.DepartmentId) {
+        this.showWarningMsgBox(MISAenum.MsgBox.InvalidDepartment);
+        this.check = false;
+      }
+    },
+
+    /**
+     * Mô tả : Ấn cất thông tin nhân viên
+     * Created by: Hà Văn Huy
+     * Created date: 13:58 15/09/2022
+     */
+    btnSaveOnClick() {
+      this.validateEmployee();
+      if (this.check) {
+        if (this.formMode == MISAenum.FormMode.Add) {
+          this.postNewEmployee(); // Thêm một nhân viên
+        } else if (this.formMode == MISAenum.FormMode.Update) {
+          this.putEmployee(); // Sửa thông tin nhân viên
+        }
+      }
+    },
+
+    /**
+     * Mô tả : Thêm mới một nhân viên
+     * Created by: Hà Văn Huy
+     * Created date: 21:23 14/09/2022
+     */
+    async postNewEmployee() {
+      try {
+        await axios.post(
+          "https://cukcuk.manhnv.net/api/v1/Employees",
+          this.employee
+        );
+        // Thêm mới thành công
+        this.employee = {};
+        this.onClickClose();
+        this.reloadData();
+      } catch (res) {
+        this.showWarningMsgBox(res.response.data.devMsg);
+      }
+    },
+
+    /**
+     * Mô tả : Thêm mới một nhân viên
+     * Created by: Hà Văn Huy
+     * Created date: 21:45 14/09/2022
+     */
+     async putEmployee() {
+      // try {
+      //   await axios.put(
+      //     "https://cukcuk.manhnv.net/api/v1/Employees",
+      //     this.employee.id
+      //   );
+      //   this.employee = {};
+      //   this.onClickClose();
+      //   this.reloadData();
+      // } catch (res) {
+      //   this.showWarningMsgBox(res.response.data.devMsg);
+      // }
+    },
+
+    /**
+     * Mô tả : Load lại danh sách nhân viên
+     * @param
+     * @return
+     * Created by: Hà Văn Huy
+     * Created date: 21:29 14/09/2022
+     */
+    reloadData() {
+      this.$emit("reloadData");
+    },
+
+    /**
+     * Mô tả : Lấy dữ liệu từ các combobox
+     * Created by: Hà Văn Huy
+     * Created date: 01:16 15/09/2022
+     */
+    bindDataForm(data) {
+      this.employee.DepartmentId = data.item.id;
     },
 
     /**

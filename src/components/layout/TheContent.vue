@@ -104,7 +104,9 @@
               <td style="min-width: 100px; width: 100px">
                 {{ this.formatDate(emp.DateOfBirth) }}
               </td>
-              <td style="min-width: 138px; width: 138px">{{ emp.PositionName }}</td>
+              <td style="min-width: 138px; width: 138px">
+                {{ emp.PositionName }}
+              </td>
               <td style="min-width: 221px; width: 221px">
                 {{ emp.DepartmentName }}
               </td>
@@ -155,7 +157,9 @@
       @closeOnClick="showHideDialog"
       :employeeSelectedInChild="employeeSelected"
       :formMode="formMode"
+      @reloadData="getEmployeePaging"
     />
+    <loading-screen v-if="isLoading" />
   </div>
 </template>
 
@@ -168,6 +172,7 @@ import axios from "axios";
 import PageSizeComponent from "../base/PageSize.vue";
 import EmployeeDetail from "../view/EmployeeDetail.vue";
 import Combobox from "../../js/combobox";
+import LoadingScreen from "../layout/LoadingScreen.vue";
 
 export default {
   name: "EmployeeList",
@@ -175,6 +180,7 @@ export default {
   components: {
     EmployeeDetail,
     PageSizeComponent,
+    LoadingScreen,
   },
 
   data() {
@@ -213,6 +219,7 @@ export default {
      * Created date: 11:53 13/09/2022
      */
     async getEmployeePaging() {
+      this.isLoading = true;
       try {
         let me = this;
         let res = await axios.get(
@@ -223,6 +230,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
+      this.isLoading = false;
     },
 
     /**
@@ -250,14 +258,14 @@ export default {
     },
 
     /**
-    * Mô tả : Chỉnh sửa thông tin nhân viên
-    * Created by: Hà Văn Huy
-    * Created date: 14:30 13/09/2022
-    */
+     * Mô tả : Chỉnh sửa thông tin nhân viên
+     * Created by: Hà Văn Huy
+     * Created date: 14:30 13/09/2022
+     */
     onClickFix(emp) {
       this.showHideDialog(true);
       this.formMode = this.MISAenum.FormMode.Update;
-      this.employeeSelected = emp;
+      this.employeeSelected = JSON.parse(JSON.stringify(emp));
     },
 
     /**
@@ -276,6 +284,16 @@ export default {
      */
     onQuickSearch() {
       this.getEmployeePaging();
+    },
+
+    /**
+     * Mô tả : Load lại danh sách nhân viên
+     * Created by: Hà Văn Huy
+     * Created date: 17:27 15/09/2022
+     */
+    btnRefresh() {
+      let me = this;
+      me.getEmployeePaging();
     },
 
     /**

@@ -6,7 +6,6 @@
     left: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 3;
-    display: none;
 }
 
 .m-messageBox {
@@ -65,8 +64,18 @@
 }
 
 .m-messageBox .m-btn-no{
-    padding: 0px 16px 0 16px;
+    /* padding: 0px 16px 0 16px;
     background-color: transparent;
     color: #111;
-    border: 1px solid #8d9096;
+    border: 1px solid #8d9096; */
+
+    padding: 0px 16px 0 16px;
+    background-color: #2ca01c;
+    color: #fff;
+    border: 0;
+}
+
+.m-msg-warning {
+    display: flex;
+    justify-content: center !important; 
 }
