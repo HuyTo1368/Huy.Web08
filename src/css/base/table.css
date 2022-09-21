@@ -30,7 +30,7 @@
     padding: 0 10px;
     position: sticky;
     top: 0px;
-    
+
 }
 
 .m-table tbody td {
@@ -40,28 +40,59 @@
     box-sizing: border-box;
     padding: 0 10px;
     overflow: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
 }
 
 .m-table-func {
     display: flex;
     justify-items: center;
     margin: auto;
+    justify-content: center;
 }
 
-.m-func-name {
-    font-weight: 600;
+.default-action {
     color: #0075c0;
-    padding-left: 28px;
+    font-weight: 600;
     cursor: pointer;
 }
 
-.m-table-func .btn-dropdown {
+.action-employee {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    position: relative;
+}
+
+.choice-action {
+    width: 105px;
+    height: 90px;
+    border: 1px solid #ccc;
+    padding: 2px;
+    background-color: #fff;
+    z-index: 12;
+    position: absolute;
+}
+
+.choice-action.choices-show {
+    display: block;
+}
+
+.choice-action-item {
+    padding-left: 8px;
+    height: calc(84px / 3);
+    line-height: 28px;
+}
+
+.choice-action-item:hover {
+    color: #35bf22;
+    background-color: #ccc;
+}
+
+.icon-action {
     background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -896px -359px;
-    margin-left: 10px;
-    cursor: pointer;
-    height: 16px;
     width: 16px;
-    padding-right: 5px;
+    height: 16px;
+    margin-left: 15px;
+    cursor: pointer;
 }
-

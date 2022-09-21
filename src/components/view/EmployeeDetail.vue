@@ -38,6 +38,13 @@
                   v-model="employee.EmployeeCode"
                   id="txtEmployeeCode"
                   ref="employeeCodeInput"
+                  v-bind:class="[
+                    message == MISAenum.MsgBox.InvalidEmployeeCode &&
+                    (employee.EmployeeCode == null ||
+                      employee.EmployeeCode == '')
+                      ? 'm-row-error'
+                      : '',
+                  ]"
                 />
               </div>
               <div class="m-row-field">
@@ -50,6 +57,12 @@
                   v-model="employee.FullName"
                   ref="employeeNameInput"
                   id="txtEmployeeName"
+                  v-bind:class="[
+                    message == MISAenum.MsgBox.InvalidEmployeeName &&
+                    (employee.FullName == null || employee.FullName == '')
+                      ? 'm-row-error'
+                      : '',
+                  ]"
                 />
               </div>
             </div>
@@ -80,7 +93,12 @@
               <div class="m-row-field">
                 <label>Ngày sinh</label>
                 <br />
-                <input type="date" style="width: 161px" v-model="dobformat" />
+                <input
+                  type="date"
+                  style="width: 161px"
+                  v-model="dobformat"
+                  placeholder="DD/MM/YYYY"
+                />
               </div>
               <div class="m-row-field" style="padding-left: 20px">
                 <label>Giới tính</label>
@@ -206,8 +224,8 @@
           <button class="m-btn-form" @click="onClickClose">Hủy</button>
         </div>
         <div class="m-button-accpect">
-          <button class="m-btn-form">Cất</button>
-          <button class="m-btn-form m-btn-form-add" @click="btnSaveOnClick">
+          <button class="m-btn-form" @click="btnSaveOnClick">Cất</button>
+          <button class="m-btn-form m-btn-form-add" @click="btnSaveAndAdd">
             Cất và thêm
           </button>
         </div>
@@ -217,7 +235,7 @@
       :showMsg="isShowMsgBox"
       :message="message"
       :messageBoxMode="messageBoxMode"
-      @cancelMsgBox="isShowMsgBox = !$event"
+      @cancelMsgBox="cancelMsgBox"
     />
   </div>
 </template>
@@ -253,6 +271,8 @@ export default {
       departments: Combobox.getDepartment("EmployeeList"),
 
       check: true,
+
+      message: null,
     };
   },
 
@@ -278,6 +298,7 @@ export default {
      * Created date: 11:15 13/09/2022
      */
     onClickClose() {
+      this.message = null;
       this.$emit("closeOnClick", false);
     },
 
@@ -316,14 +337,18 @@ export default {
      * Created by: Hà Văn Huy
      * Created date: 13:58 15/09/2022
      */
-    btnSaveOnClick() {
+    async btnSaveOnClick() {
       this.validateEmployee();
       if (this.check) {
         if (this.formMode == MISAenum.FormMode.Add) {
-          this.postNewEmployee(); // Thêm một nhân viên
+          await this.postNewEmployee(); // Thêm một nhân viên
+          this.$emit('showToast', MISAenum.ToastMsg.AddSuccess);
         } else if (this.formMode == MISAenum.FormMode.Update) {
-          this.putEmployee(); // Sửa thông tin nhân viên
+          await this.putEmployee(); // Sửa thông tin nhân viên
+          this.$emit('showToast', MISAenum.ToastMsg.EditSuccess);
         }
+        this.reloadData();
+        this.onClickClose();
       }
     },
 
@@ -338,10 +363,7 @@ export default {
           "https://cukcuk.manhnv.net/api/v1/Employees",
           this.employee
         );
-        // Thêm mới thành công
-        this.employee = {};
-        this.onClickClose();
-        this.reloadData();
+        this.employee = {}; // Thêm mới thành công
       } catch (res) {
         this.showWarningMsgBox(res.response.data.devMsg);
       }
@@ -352,7 +374,7 @@ export default {
      * Created by: Hà Văn Huy
      * Created date: 21:45 14/09/2022
      */
-     async putEmployee() {
+    async putEmployee() {
       // try {
       //   await axios.put(
       //     "https://cukcuk.manhnv.net/api/v1/Employees",
@@ -368,8 +390,6 @@ export default {
 
     /**
      * Mô tả : Load lại danh sách nhân viên
-     * @param
-     * @return
      * Created by: Hà Văn Huy
      * Created date: 21:29 14/09/2022
      */
@@ -384,6 +404,40 @@ export default {
      */
     bindDataForm(data) {
       this.employee.DepartmentId = data.item.id;
+    },
+
+    /**
+     * Mô tả : Đóng msg box
+     * Created by: Hà Văn Huy
+     * Created date: 15:56 19/09/2022
+     */
+    cancelMsgBox(isShow) {
+      this.isShowMsgBox = !isShow;
+      if (this.message == MISAenum.MsgBox.InvalidEmployeeCode) {
+        this.$refs.employeeCodeInput.focus();
+      } else if (this.message == MISAenum.MsgBox.InvalidEmployeeName) {
+        this.$refs.employeeNameInput.focus();
+      }
+    },
+
+    /**
+     * Mô tả : Cất và thêm
+     * Created by: Hà Văn Huy
+     * Created date: 16:21 19/09/2022
+     */
+    async btnSaveAndAdd() {
+      this.validateEmployee();
+      if (this.check) {
+        if (this.formMode == MISAenum.FormMode.Add) {
+          await this.postNewEmployee(); // Thêm một nhân viên
+          this.$emit('showToast', MISAenum.ToastMsg.AddSuccess);
+        } else if (this.formMode == MISAenum.FormMode.Update) {
+          await this.putEmployee(); // Sửa thông tin nhân viên
+          this.$emit('showToast', MISAenum.ToastMsg.EditSuccess);
+        }
+        this.reloadData();
+        this.$emit("clickSaveAndAdd");
+      }
     },
 
     /**

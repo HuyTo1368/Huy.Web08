@@ -44,10 +44,11 @@
 }
 
 .m-btn-form-add {
-    background-color: #019160;
+    background-color: #2CA01C;
     color: #fff;
     margin-left: 10px;
-    border: 1px solid #019160;
+    font-weight: 500;
+    border: 1px solid #2CA01C;
 }
 
 .m-btn-form-add:hover {

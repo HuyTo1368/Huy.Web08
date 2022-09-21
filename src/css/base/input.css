@@ -62,5 +62,5 @@
 }
 
 .m-row-error {
-    border-color: red;
+    border-color: red !important;
 }

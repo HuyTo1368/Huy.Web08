@@ -1,0 +1,29 @@
+.m-toast_messenger {
+    display: flex;
+    height: 48px;
+    background-color: #f3f3f3;
+    align-items: center;
+    font-size: 14px;
+    border-radius: 4px;
+    padding-left: 8px;
+    box-sizing: border-box;
+    width: 220px;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 15;
+}
+
+.m-toast_messenger i {
+    color: #00B074;
+}
+
+.m-toast-icon {
+    margin-right: 8px;
+}
+
+
+.m-toast-close {
+    margin-left: 32px;
+    font-weight: 10000;
+}

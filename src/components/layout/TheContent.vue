@@ -115,12 +115,23 @@
               <td style="min-width: 180px; width: 180px">Hoạt động</td>
               <td style="min-width: 150px; width: 150px">Cầu Giấy</td>
               <td style="min-width: 120px; width: 120px; border-right: 0">
-                <div class="m-table-func text-align-center">
-                  <div class="m-func-name" @click="onClickFix(emp)">Sửa</div>
-                  <div
-                    class="btn-dropdown"
-                    @click="showHideFunc(emp.EmployeeCode)"
-                  ></div>
+                <div class="action-employee">
+                  <div @click.prevent="onClickFix(emp)" class="default-action">
+                    Sửa
+                  </div>
+
+                  <div @click="showChoiceAction" class="icon-action"></div>
+
+                  <!-- <div class="choice-action">
+                    <div class="choice-action-item">Nhân bản</div>
+                    <div
+                      @click.stop="showDialogDeleteEmployee($event, emp)"
+                      class="choice-action-item"
+                    >
+                      Xóa
+                    </div>
+                    <div class="choice-action-item">Sử dụng</div>
+                  </div> -->
                 </div>
               </td>
             </tr>
@@ -154,11 +165,17 @@
     </div>
     <EmployeeDetail
       :isShow="isShowDialog"
-      @closeOnClick="showHideDialog"
       :employeeSelectedInChild="employeeSelected"
       :formMode="formMode"
-      @reloadData="getEmployeePaging"
+      :success="success"
+      @closeOnClick="showHideDialog"
+      @reloadData="btnRefresh"
+      @clickSaveAndAdd="SaveAndAdd"
+      @showToast="showToast"
     />
+
+    <ToastMessage :toastBoxMode="toastBoxMode" />
+
     <loading-screen v-if="isLoading" />
   </div>
 </template>
@@ -173,6 +190,7 @@ import PageSizeComponent from "../base/PageSize.vue";
 import EmployeeDetail from "../view/EmployeeDetail.vue";
 import Combobox from "../../js/combobox";
 import LoadingScreen from "../layout/LoadingScreen.vue";
+import ToastMessage from "../base/ToastMessage.vue";
 
 export default {
   name: "EmployeeList",
@@ -181,6 +199,7 @@ export default {
     EmployeeDetail,
     PageSizeComponent,
     LoadingScreen,
+    ToastMessage,
   },
 
   data() {
@@ -193,6 +212,10 @@ export default {
       formMode: this.MISAenum.FormMode.Add, // Chọn thêm sửa xóa
 
       comboboxPageSize: Combobox.getPageSize("1"), //Số lượng bản ghi
+
+      choicheck: false,
+
+      toastBoxMode: false,
 
       pageNumberCurrent: 1,
       pageNumberMin: 1,
@@ -305,6 +328,25 @@ export default {
       let me = this;
       me.pageSize = data.item.id;
       me.getEmployeePaging();
+    },
+
+    /**
+     * Mô tả : Cất và thêm
+     * Created by: Hà Văn Huy
+     * Created date: 00:31 21/09/2022
+     */
+    SaveAndAdd() {
+      this.showHideDialog(false);
+      setTimeout(() => {
+        this.onClickAdd();
+      }, 1000);
+    },
+
+    showToast(toast) {
+      this.toastBoxMode = toast;
+      setTimeout(() => {
+        this.toastBoxMode = false;
+      }, 3000);
     },
 
     /**
