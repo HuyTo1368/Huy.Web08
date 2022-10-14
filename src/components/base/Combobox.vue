@@ -2,7 +2,7 @@
   <div class="m-combobox" :FieldName="items.FieldName">
     <input
       type="text"
-      class="m-combobox-input"
+      v-bind:class="['m-combobox-input', this.errorInput == true ? 'm-row-error':'']"
       v-model="value"
       :placeholder="items.placeholder"
     />
@@ -29,7 +29,7 @@
 export default {
   name: "ComboboxComponent",
 
-  props: ["items"],
+  props: ["items", "valueSelectedID", "valueSelectedName", "errorDepartment"],
 
   data() {
     return {
@@ -38,8 +38,16 @@ export default {
       value: "",
 
       active: false,
+      errorInput: false
     };
   },
+
+  created() {
+    if(this.valueSelectedID) {
+      this.itemSelected = {id: this.valueSelectedID, name: this.valueSelectedName}
+      this.value = this.itemSelected.name;
+    }
+  }, 
 
   methods: {
     /**
@@ -58,6 +66,7 @@ export default {
     onClickItem(item) {
       this.itemSelected = item;
       this.onClickArrow();
+      this.errorInput = false;
 
       let data = {
         fieldName: this.items.FieldName,
@@ -87,6 +96,10 @@ export default {
     itemSelected: function () {
       this.value = this.itemSelected.name;
     },
+
+    errorDepartment: function (newEmp) {
+      this.errorInput = newEmp;
+    }
   },
 };
 </script>

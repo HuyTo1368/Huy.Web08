@@ -1,8 +1,8 @@
 .m-grid-table {
     margin-top: 16px;
     height: calc(100vh - 233px);
-    box-sizing: border-box;
     overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .m-table {
@@ -15,10 +15,20 @@
     border-bottom: 1px solid #c7c7c7;
     height: 34px;
     border-collapse: collapse separate;
+    z-index: 2;
+}
+
+.m-table .m-checkbox {
+    padding-left: 12px;
+    margin-bottom: 0px;
 }
 
 .m-table tbody tr:hover {
     background-color: #F2F9FF;
+}
+
+.m-table tbody tr {
+    height: 44px;
 }
 
 .m-table thead th {
@@ -26,21 +36,21 @@
     border-bottom: 1px solid #c7c7c7;
     border-right: 1px solid #c7c7c7;
     text-transform: uppercase;
-    box-sizing: border-box;
     padding: 0 10px;
     position: sticky;
     top: 0px;
-
+    z-index: 1;
+    box-sizing: border-box;
 }
 
 .m-table tbody td {
-    height: 44px;
     border-right: 1px dotted #c7c7c7;
     border-bottom: 1px solid #c7c7c7;
-    box-sizing: border-box;
     padding: 0 10px;
     overflow: hidden;
     text-overflow: ellipsis;
+    z-index: 2;
+    box-sizing: border-box;
 }
 
 .m-table-func {
@@ -54,6 +64,7 @@
     color: #0075c0;
     font-weight: 600;
     cursor: pointer;
+    margin-right: 25px;
 }
 
 .action-employee {
@@ -65,16 +76,19 @@
 }
 
 .choice-action {
-    width: 105px;
+    width: 110px;
     height: 90px;
     border: 1px solid #ccc;
     padding: 2px;
     background-color: #fff;
-    z-index: 12;
+    z-index: 5;
     position: absolute;
+    display: none;
+    right: 30px;
+    margin-top: 30px;
 }
 
-.choice-action.choices-show {
+.choices-show {
     display: block;
 }
 
@@ -87,6 +101,8 @@
 .choice-action-item:hover {
     color: #35bf22;
     background-color: #ccc;
+    cursor: pointer;
+    font-weight: 600;
 }
 
 .icon-action {
@@ -95,4 +111,5 @@
     height: 16px;
     margin-left: 15px;
     cursor: pointer;
+    position: absolute;
 }

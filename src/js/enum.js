@@ -29,6 +29,7 @@ let MISAenum = {
         Error: "error",
         Notify: "notify"
     }
+    
 }
 
 export default MISAenum;

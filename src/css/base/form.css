@@ -91,3 +91,7 @@
     justify-content: space-between;
     padding: 14px 32px 0 32px;
 }
+
+.input-date-identity {
+    text-transform: uppercase;
+}

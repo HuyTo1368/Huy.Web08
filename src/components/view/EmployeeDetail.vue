@@ -3,7 +3,7 @@
     <div class="m-detail-employee">
       <div class="m-dialog-header">
         <div class="m-header-right">
-          <div class="m-dialog-title">THÔNG TIN NHÂN VIÊN</div>
+          <div class="m-dialog-title">Thông tin nhân viên</div>
           <div style="display: flex; align-items: center">
             <label class="m-checkbox"
               >Là khách hàng
@@ -35,13 +35,13 @@
                   type="text"
                   style="width: 151px"
                   placeholder="Nhập mã nhân viên"
-                  v-model="employee.EmployeeCode"
+                  v-model="employee.employeeCode"
                   id="txtEmployeeCode"
                   ref="employeeCodeInput"
                   v-bind:class="[
                     message == MISAenum.MsgBox.InvalidEmployeeCode &&
-                    (employee.EmployeeCode == null ||
-                      employee.EmployeeCode == '')
+                    (employee.employeeCode == null ||
+                      employee.employeeCode == '')
                       ? 'm-row-error'
                       : '',
                   ]"
@@ -54,12 +54,12 @@
                   type="text"
                   style="width: 235px"
                   placeholder="Nhập họ tên"
-                  v-model="employee.FullName"
+                  v-model="employee.fullName"
                   ref="employeeNameInput"
                   id="txtEmployeeName"
                   v-bind:class="[
                     message == MISAenum.MsgBox.InvalidEmployeeName &&
-                    (employee.FullName == null || employee.FullName == '')
+                    (employee.fullName == null || employee.fullName == '')
                       ? 'm-row-error'
                       : '',
                   ]"
@@ -72,6 +72,9 @@
                 <br />
                 <combobox-component
                   :items="this.departments"
+                  :valueSelectedID = "this.employee.departmentID"
+                  :valueSelectedName = "this.employee.departmentName"
+                  :errorDepartment = "errorDepartment"
                   @bindDataForm="bindDataForm"
                 ></combobox-component>
               </div>
@@ -84,6 +87,7 @@
                   type="text"
                   style="width: 392px"
                   placeholder="Nhập chức danh"
+                  v-model="employee.positionName"
                 />
               </div>
             </div>
@@ -98,6 +102,7 @@
                   style="width: 161px"
                   v-model="dobformat"
                   placeholder="DD/MM/YYYY"
+                  class="input-date-identity"
                 />
               </div>
               <div class="m-row-field" style="padding-left: 20px">
@@ -110,7 +115,7 @@
                       type="radio"
                       name="radio"
                       value="0"
-                      v-model="employee.Gender"
+                      v-model="employee.gender"
                     />
                     <span class="checkmark"></span>
                   </label>
@@ -120,7 +125,7 @@
                       type="radio"
                       name="radio"
                       value="1"
-                      v-model="employee.Gender"
+                      v-model="employee.gender"
                     />
                     <span class="checkmark"></span>
                   </label>
@@ -130,7 +135,7 @@
                       type="radio"
                       name="radio"
                       value="2"
-                      v-model="employee.Gender"
+                      v-model="employee.gender"
                     />
                     <span class="checkmark"></span>
                   </label>
@@ -145,12 +150,18 @@
                   type="text"
                   style="width: 245px"
                   placeholder="Nhập số CMND"
+                  v-model="employee.identityNumber"
                 />
               </div>
               <div class="m-row-field">
                 <label>Ngày cấp</label>
                 <br />
-                <input type="date" style="width: 167px" />
+                <input
+                  type="date"
+                  style="width: 167px"
+                  class="input-date-identity"
+                  v-model="dateCMNDformat"
+                />
               </div>
             </div>
             <div class="m-infor-row">
@@ -161,6 +172,7 @@
                   type="text"
                   style="width: 418px"
                   placeholder="Nhập nơi cấp"
+                  v-model="employee.identityPlace"
                 />
               </div>
             </div>
@@ -175,6 +187,7 @@
                 type="text"
                 style="width: 841px"
                 placeholder="Nhập địa chỉ"
+                v-model="employee.address"
               />
             </div>
           </div>
@@ -182,12 +195,20 @@
             <div class="m-row-field">
               <label>ĐT di động</label>
               <br />
-              <input type="text" style="width: 197px" />
+              <input
+                type="text"
+                style="width: 197px"
+                v-model="employee.phoneNumber"
+              />
             </div>
             <div class="m-row-field">
               <label>ĐT cố định</label>
               <br />
-              <input type="text" style="width: 197px" />
+              <input
+                type="text"
+                style="width: 197px"
+                v-model="employee.telephoneNumber"
+              />
             </div>
             <div class="m-row-field">
               <label>Email</label>
@@ -195,7 +216,7 @@
               <input
                 type="text"
                 style="width: 203px"
-                v-model="employee.Email"
+                v-model="employee.email"
               />
             </div>
           </div>
@@ -203,17 +224,29 @@
             <div class="m-row-field">
               <label>Tài khoản ngân hàng</label>
               <br />
-              <input type="text" style="width: 197px" />
+              <input
+                type="text"
+                style="width: 197px"
+                v-model="employee.bankAccountNumber"
+              />
             </div>
             <div class="m-row-field">
               <label>Tên ngân hàng</label>
               <br />
-              <input type="text" style="width: 197px" />
+              <input
+                type="text"
+                style="width: 197px"
+                v-model="employee.bankName"
+              />
             </div>
             <div class="m-row-field">
               <label>Chi nhánh</label>
               <br />
-              <input type="text" style="width: 203px" />
+              <input
+                type="text"
+                style="width: 203px"
+                v-model="employee.bankBranchName"
+              />
             </div>
           </div>
         </div>
@@ -265,10 +298,12 @@ export default {
 
       //date of birth sau khi dinh dang
       dobformat: "",
+      dateCMNDformat: "",
 
       isShowMsgBox: false, // Hiển thị messageBox
 
       departments: Combobox.getDepartment("EmployeeList"),
+      errorDepartment: false,
 
       check: true,
 
@@ -284,7 +319,8 @@ export default {
      */
     employeeSelectedInChild: function (newEmp) {
       this.employee = newEmp;
-      this.dobformat = this.formatDate(this.employee.DateOfBirth);
+      this.dobformat = this.formatDate(this.employee.dateOfBirth);
+      this.dateCMNDformat=this.formatDate(this.employee.identityDate);
       setTimeout(() => {
         this.$refs.employeeCodeInput.focus();
       }, 100);
@@ -320,14 +356,15 @@ export default {
      */
     validateEmployee() {
       this.check = true;
-      if (!this.employee.EmployeeCode) {
+      if (!this.employee.employeeCode) {
         this.showWarningMsgBox(MISAenum.MsgBox.InvalidEmployeeCode);
         this.check = false;
-      } else if (!this.employee.FullName) {
+      } else if (!this.employee.fullName) {
         this.showWarningMsgBox(MISAenum.MsgBox.InvalidEmployeeName);
         this.check = false;
-      } else if (!this.employee.DepartmentId) {
+      } else if (!this.employee.departmentID) {
         this.showWarningMsgBox(MISAenum.MsgBox.InvalidDepartment);
+        this.errorDepartment = true;
         this.check = false;
       }
     },
@@ -339,13 +376,24 @@ export default {
      */
     async btnSaveOnClick() {
       this.validateEmployee();
+      if (this.employee.gender) {
+        this.formatGender();
+      }
+
+      if(this.dobformat) {
+        this.employee.dateOfBirth = new Date (this.dobformat);
+      }
+      if(this.dateCMNDformat) {
+        this.employee.identityDate = new Date (this.dateCMNDformat);
+      }
+
       if (this.check) {
         if (this.formMode == MISAenum.FormMode.Add) {
           await this.postNewEmployee(); // Thêm một nhân viên
-          this.$emit('showToast', MISAenum.ToastMsg.AddSuccess);
+          this.$emit("showToast", MISAenum.ToastMsg.AddSuccess);
         } else if (this.formMode == MISAenum.FormMode.Update) {
           await this.putEmployee(); // Sửa thông tin nhân viên
-          this.$emit('showToast', MISAenum.ToastMsg.EditSuccess);
+          this.$emit("showToast", MISAenum.ToastMsg.EditSuccess);
         }
         this.reloadData();
         this.onClickClose();
@@ -359,10 +407,7 @@ export default {
      */
     async postNewEmployee() {
       try {
-        await axios.post(
-          "https://cukcuk.manhnv.net/api/v1/Employees",
-          this.employee
-        );
+        await axios.post("https://localhost:7176/api/Employees", this.employee);
         this.employee = {}; // Thêm mới thành công
       } catch (res) {
         this.showWarningMsgBox(res.response.data.devMsg);
@@ -370,22 +415,22 @@ export default {
     },
 
     /**
-     * Mô tả : Thêm mới một nhân viên
+     * Mô tả : Chỉnh sửa thông tin của một nhân viên
      * Created by: Hà Văn Huy
      * Created date: 21:45 14/09/2022
      */
     async putEmployee() {
-      // try {
-      //   await axios.put(
-      //     "https://cukcuk.manhnv.net/api/v1/Employees",
-      //     this.employee.id
-      //   );
-      //   this.employee = {};
-      //   this.onClickClose();
-      //   this.reloadData();
-      // } catch (res) {
-      //   this.showWarningMsgBox(res.response.data.devMsg);
-      // }
+      try {
+        await axios.put(
+          `https://localhost:7176/api/Employees/${this.employee.employeeID}`,
+          this.employee
+        );
+        this.employee = {};
+        this.onClickClose();
+        this.reloadData();
+      } catch (res) {
+        this.showWarningMsgBox(res.response.data.devMsg);
+      }
     },
 
     /**
@@ -403,7 +448,9 @@ export default {
      * Created date: 01:16 15/09/2022
      */
     bindDataForm(data) {
-      this.employee.DepartmentId = data.item.id;
+      this.errorDepartment = false;
+      this.employee.departmentID = data.item.id;
+      this.employee.departmentName = data.item.name;
     },
 
     /**
@@ -427,13 +474,16 @@ export default {
      */
     async btnSaveAndAdd() {
       this.validateEmployee();
+      if (this.employee.gender) {
+        this.formatGender();
+      }
       if (this.check) {
         if (this.formMode == MISAenum.FormMode.Add) {
           await this.postNewEmployee(); // Thêm một nhân viên
-          this.$emit('showToast', MISAenum.ToastMsg.AddSuccess);
+          this.$emit("showToast", MISAenum.ToastMsg.AddSuccess);
         } else if (this.formMode == MISAenum.FormMode.Update) {
           await this.putEmployee(); // Sửa thông tin nhân viên
-          this.$emit('showToast', MISAenum.ToastMsg.EditSuccess);
+          this.$emit("showToast", MISAenum.ToastMsg.EditSuccess);
         }
         this.reloadData();
         this.$emit("clickSaveAndAdd");
@@ -461,6 +511,21 @@ export default {
         return value;
       } else {
         return "";
+      }
+    },
+
+    /**
+     * Mô tả : Format giới tính
+     * Created by: Hà Văn Huy
+     * Created date: 01:53 12/10/2022
+     */
+    formatGender() {
+      if (this.employee.gender == "0") {
+        this.employee.gender = 0;
+      } else if (this.employee.gender == "1") {
+        this.employee.gender = 1;
+      } else if (this.employee.gender == "2") {
+        this.employee.gender = 2;
       }
     },
   },

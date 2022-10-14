@@ -1,17 +1,21 @@
 .m-toast_messenger {
     display: flex;
     height: 48px;
-    background-color: #f3f3f3;
+    background-color: #ebe8e8;
     align-items: center;
     font-size: 14px;
     border-radius: 4px;
     padding-left: 8px;
     box-sizing: border-box;
-    width: 220px;
+    width: 250px;
     position: fixed;
     bottom: 24px;
     right: 24px;
     z-index: 15;
+}
+
+.m-toast-delete {
+    width: 210px;
 }
 
 .m-toast_messenger i {
@@ -26,4 +30,35 @@
 .m-toast-close {
     margin-left: 32px;
     font-weight: 10000;
+}
+
+.m-toast-text {
+    font-weight: 520;
+}
+
+.m-toast-icon-add {
+    background: url('../../assets/img/Sprites.64af8f61.svg') no-repeat -893px -406px;
+	width: 17px;
+	height: 18px;
+    margin-right: 20px;
+}
+
+.m-toast-icon-edit {
+    background: url('../../assets/img/Sprites.64af8f61.svg') no-repeat -992px -405px;
+	width: 17px;
+	height: 18px;
+    margin-right: 20px;
+}
+
+.m-toast-icon-delete {
+    background: url('../../assets/img/Sprites.64af8f61.svg') no-repeat -1031px -406px;
+	width: 17px;
+	height: 18px;
+    margin-right: 20px;
+}
+
+.m-toast-close-delete i{
+    margin-left: 32px;
+    font-weight: 10000;
+    color: red;
 }
