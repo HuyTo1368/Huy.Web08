@@ -23,7 +23,12 @@
         <table class="m-table">
           <thead>
             <tr>
-              <th><input type="checkbox" name="" id="" /></th>
+              <th>
+                <label class="m-checkbox">
+                  <input type="checkbox" />
+                  <span class="checkmark"></span>
+                </label>
+              </th>
               <th
                 class="text-align-left"
                 style="min-width: 148px; width: 148px"
@@ -44,6 +49,12 @@
                 style="min-width: 100px; width: 100px"
               >
                 Ngày sinh
+              </th>
+              <th
+                class="text-align-left"
+                style="min-width: 180px; width: 180px"
+              >
+                Số CMND
               </th>
               <th
                 class="text-align-left"
@@ -71,12 +82,6 @@
               </th>
               <th
                 class="text-align-left"
-                style="min-width: 180px; width: 180px"
-              >
-                Trạng thái
-              </th>
-              <th
-                class="text-align-left"
                 style="min-width: 150px; width: 150px"
               >
                 Chi nhánh
@@ -90,50 +95,72 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="emp in employees" :key="emp.EmployeeId">
-              <td><input type="checkbox" name="" id="" /></td>
+            <tr v-for="emp in employees" :key="emp.employeeID">
+              <td>
+                <label class="m-checkbox">
+                  <input type="checkbox" />
+                  <span class="checkmark"></span>
+                </label>
+              </td>
               <td style="min-width: 148px; width: 148px">
-                {{ emp.EmployeeCode }}
+                {{ emp.employeeCode }}
               </td>
               <td style="min-width: 140px; max-width: 190px">
-                {{ emp.FullName }}
+                {{ emp.fullName }}
               </td>
               <td style="min-width: 64px; width: 64px">
-                {{ emp.GenderName }}
+                {{ this.formatGender(emp.gender) }}
               </td>
               <td style="min-width: 100px; width: 100px">
-                {{ this.formatDate(emp.DateOfBirth) }}
+                {{ this.formatDate(emp.dateOfBirth) }}
+              </td>
+              <td style="min-width: 180px; width: 180px">
+                {{ emp.identityNumber }}
               </td>
               <td style="min-width: 138px; width: 138px">
-                {{ emp.PositionName }}
+                {{ emp.positionName }}
               </td>
               <td style="min-width: 221px; width: 221px">
-                {{ emp.DepartmentName }}
+                {{ emp.departmentName }}
               </td>
-              <td style="min-width: 150px; width: 150px">3067151</td>
-              <td style="min-width: 151px; width: 151px">ACB</td>
-              <td style="min-width: 180px; width: 180px">Hoạt động</td>
-              <td style="min-width: 150px; width: 150px">Cầu Giấy</td>
+              <td style="min-width: 150px; width: 150px">
+                {{ emp.bankAccountNumber }}
+              </td>
+              <td style="min-width: 151px; width: 151px">{{ emp.bankName }}</td>
+              <td style="min-width: 150px; width: 150px">
+                {{ emp.bankBranchName }}
+              </td>
               <td style="min-width: 120px; width: 120px; border-right: 0">
                 <div class="action-employee">
                   <div @click.prevent="onClickFix(emp)" class="default-action">
                     Sửa
                   </div>
 
-                  <div @click="showChoiceAction" class="icon-action"></div>
-
-                  <!-- <div class="choice-action">
-                    <div class="choice-action-item">Nhân bản</div>
-                    <div
-                      @click.stop="showDialogDeleteEmployee($event, emp)"
-                      class="choice-action-item"
-                    >
-                      Xóa
-                    </div>
-                    <div class="choice-action-item">Sử dụng</div>
-                  </div> -->
+                  <div
+                    @click="showChoiceAction(emp.employeeID)"
+                    class="icon-action"
+                  ></div>
                 </div>
               </td>
+              <div
+                v-bind:class="[
+                  'choice-action',
+                  choiceAction == true && choiceID == emp.employeeID
+                    ? 'choices-show'
+                    : '',
+                ]"
+              >
+                <div class="choice-action-item" @click="onReplication(emp)">
+                  Nhân bản
+                </div>
+                <div
+                  @click.stop="showDialogDeleteEmployee(emp)"
+                  class="choice-action-item"
+                >
+                  Xóa
+                </div>
+                <div class="choice-action-item">Ngưng sử dụng</div>
+              </div>
             </tr>
           </tbody>
         </table>
@@ -177,6 +204,14 @@
     <ToastMessage :toastBoxMode="toastBoxMode" />
 
     <loading-screen v-if="isLoading" />
+
+    <MessageBox
+      :showMsg="isShowMsgBox"
+      :message="message"
+      :messageBoxMode="messageBoxMode"
+      @cancelMsgBox="cancelMsgBox"
+      @deleteEmployee="deleteEmployee"
+    />
   </div>
 </template>
 
@@ -191,6 +226,8 @@ import EmployeeDetail from "../view/EmployeeDetail.vue";
 import Combobox from "../../js/combobox";
 import LoadingScreen from "../layout/LoadingScreen.vue";
 import ToastMessage from "../base/ToastMessage.vue";
+import MessageBox from "../base/MessageBox.vue";
+import MISAenum from "../../js/enum";
 
 export default {
   name: "EmployeeList",
@@ -200,6 +237,7 @@ export default {
     PageSizeComponent,
     LoadingScreen,
     ToastMessage,
+    MessageBox,
   },
 
   data() {
@@ -209,13 +247,16 @@ export default {
 
       isShowDialog: false, // form thông tin nhân viên
 
+      isShowMsgBox: false, // hiện thông báo xóa
+
       formMode: this.MISAenum.FormMode.Add, // Chọn thêm sửa xóa
 
       comboboxPageSize: Combobox.getPageSize("1"), //Số lượng bản ghi
 
-      choicheck: false,
+      choiceAction: false,
+      choiceID: null,
 
-      toastBoxMode: false,
+      toastBoxMode: null,
 
       pageNumberCurrent: 1,
       pageNumberMin: 1,
@@ -246,10 +287,10 @@ export default {
       try {
         let me = this;
         let res = await axios.get(
-          `https://cukcuk.manhnv.net/api/v1/Employees/filter?pageSize=${me.pageSize}&pageNumber=${me.pageNumberCurrent}&employeeFilter=${me.quickSearch}&departmentId=${me.departmentID}&positionId=${me.jobpositionID}`
+          `https://localhost:7176/api/Employees/filter?pageNumber=${me.pageNumberCurrent}&pageSize=${me.pageSize}&employeeFilter=${me.quickSearch}`
         );
-        me.employees = res.data.Data;
-        me.totalRecord = res.data.TotalRecord;
+        me.employees = res.data.data;
+        me.totalRecord = res.data.totalCount;
       } catch (error) {
         console.log(error);
       }
@@ -268,9 +309,9 @@ export default {
         me.employeeSelected = {};
         me.showHideDialog(true);
         axios
-          .get(`https://cukcuk.manhnv.net/api/v1/Employees/NewEmployeeCode`)
+          .get(`https://localhost:7176/api/Employees/NewEmployeeCode`)
           .then(function (res) {
-            me.employeeSelected.EmployeeCode = res.data;
+            me.employeeSelected.employeeCode = res.data;
           })
           .catch(function (res) {
             console.log(res.data);
@@ -316,6 +357,7 @@ export default {
      */
     btnRefresh() {
       let me = this;
+      me.quickSearch = "";
       me.getEmployeePaging();
     },
 
@@ -342,11 +384,80 @@ export default {
       }, 1000);
     },
 
+    /**
+     * Mô tả : Hiển thị thông báo
+     * Created by: Hà Văn Huy
+     * Created date: 14:17 10/10/2022
+     */
     showToast(toast) {
       this.toastBoxMode = toast;
       setTimeout(() => {
         this.toastBoxMode = false;
       }, 3000);
+    },
+
+    /**
+     * Mô tả : Mở bảng chức năng
+     * Created by: Hà Văn Huy
+     * Created date: 04:04 12/10/2022
+     */
+    showChoiceAction(employeeID) {
+      this.choiceAction = !this.choiceAction;
+      this.choiceID = employeeID;
+    },
+
+    onReplication(emp) {
+      let me = this;
+      me.choiceAction = !me.choiceAction;
+      me.onClickAdd();
+      let tmp = me.employeeSelected.employeeCode;
+      me.employeeSelected = JSON.parse(JSON.stringify(emp));
+      me.employeeSelected.employeeCode = tmp;
+    },
+
+    /**
+     * Mô tả : Xóa thông tin nhân viên
+     * Created by: Hà Văn Huy
+     * Created date: 09:41 9/10/2022
+     */
+    showDialogDeleteEmployee(emp) {
+      this.showConfirmDeleteMsgBox(emp.employeeCode);
+      this.employeeSelected = emp;
+    },
+
+    /**
+     * Mô tả : Hiển thị cảnh báo
+     * Created by: Hà Văn Huy
+     * Created date: 08:46 15/09/2022
+     */
+    showConfirmDeleteMsgBox(msg) {
+      this.message = msg;
+      this.messageBoxMode = MISAenum.Msg.ConfirmDelete;
+      this.isShowMsgBox = true;
+      this.choiceAction = false;
+    },
+
+    /**
+     * Mô tả : tắt cảnh báo
+     * Created by: Hà Văn Huy
+     * Created date: 08:46 15/09/2022
+     */
+    cancelMsgBox() {
+      this.isShowMsgBox = false;
+    },
+
+    async deleteEmployee() {
+      let employeeID = this.employeeSelected.employeeID;
+      try {
+        await axios.delete(
+          `https://localhost:7176/api/Employees/${employeeID}`
+        );
+        this.getEmployeePaging();
+        this.employeeSelected = {};
+        this.showToast(MISAenum.ToastMsg.DeleteSuccess);
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     /**
@@ -368,6 +479,26 @@ export default {
           value = "Chưa có";
         }
         return value;
+      } catch (error) {
+        console.log(error);
+        return "";
+      }
+    },
+
+    /**
+     * Mô tả : Format giới tính
+     * Created by: Hà Văn Huy
+     * Created date: 10:10 13/10/2022
+     */
+    formatGender(value) {
+      try {
+        if (value == 0) {
+          return "Nam";
+        } else if (value == 1) {
+          return "Nữ";
+        } else {
+          return "Khác";
+        }
       } catch (error) {
         console.log(error);
         return "";
